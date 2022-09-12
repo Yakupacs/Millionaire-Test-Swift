@@ -98,8 +98,8 @@
 			children = (
 				3531265628C8E38700BCC7EF /* ViewController.swift */,
 				3531266F28C8EE5700BCC7EF /* ViewControllerTest.swift */,
-				35F094E128CE1870009BEEF4 /* ViewControllerTelephone.swift */,
 				354F6AD128CE5E7300723364 /* ViewControllerSeyirci.swift */,
+				35F094E128CE1870009BEEF4 /* ViewControllerTelephone.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

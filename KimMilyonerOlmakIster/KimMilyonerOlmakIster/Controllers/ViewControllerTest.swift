@@ -33,7 +33,7 @@ class ViewControllerTest: UIViewController {
     var whichButton : String = ""
     
     var timer = Timer()
-    var myTime = 3
+    var myTime = 25
     
     var correctQuestion = 0
     
@@ -593,18 +593,23 @@ class ViewControllerTest: UIViewController {
     }
     
     @IBAction func aFunc(_ sender: Any) {
+        // A BUTTON
         buttonFunc(buttonName: "a",button: aButton)
     }
     @IBAction func bFunc(_ sender: Any) {
+        // B BUTTON
         buttonFunc(buttonName: "b",button: bButton)
     }
     @IBAction func cFunc(_ sender: Any) {
+        // C BUTTON
         buttonFunc(buttonName: "c",button: cButton)
     }
     @IBAction func dFunc(_ sender: Any) {
+        // D BUTTON
         buttonFunc(buttonName: "d",button: dButton)
     }
     @IBAction func halfButton(_ sender: Any) {
+        // YARI YARIYA JOKER
         buttons[1].setTitle("", for: .normal)
         buttons[2].setTitle("", for: .normal)
         buttons[1].isEnabled = false
@@ -612,51 +617,70 @@ class ViewControllerTest: UIViewController {
         yariYariyaButton.isHidden = true
     }
     @IBAction func telephoneButton(_ sender: Any) {
+        // TELEFON JOKERİ
         telefonButton.isHidden = true
     }
     
     func makeQuestionEasy1(){
+        // 1.SORU ÇAĞIRMA
+        myTime = 25
         oneArray.shuffle()
         makeQuestion(level: "1", reward: "100", question: oneArray)
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countTimer), userInfo: nil, repeats: true)
     }
     
     func makeQuestionEasy2(){
+        // 2.SORU ÇAĞIRMA
+        myTime = 25
         twoArray.shuffle()
         makeQuestion(level: "2", reward: "500", question: twoArray)
-
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countTimer), userInfo: nil, repeats: true)
     }
     
     func makeQuestionEasy3(){
+        // 3.SORU ÇAĞIRMA
+        myTime = 60
         threeArray.shuffle()
         makeQuestion(level: "3", reward: "1000", question: threeArray)
-
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countTimer), userInfo: nil, repeats: true)
     }
     
     func makeQuestionMiddle4(){
+        // 4.SORU ÇAĞIRMA
+        myTime = 60
         fourArray.shuffle()
         makeQuestion(level: "4", reward: "5000", question: fourArray)
-
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countTimer), userInfo: nil, repeats: true)
     }
     
     func makeQuestionMiddle5(){
+        // 5.SORU ÇAĞIRMA
+        myTime = 120
         fiveArray.shuffle()
         makeQuestion(level: "5", reward: "10000", question: fiveArray)
-
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countTimer), userInfo: nil, repeats: true)
     }
     
     func makeQuestionMiddle6(){
+        // 6.SORU ÇAĞIRMA
+        timer.invalidate()
         sixArray.shuffle()
         makeQuestion(level: "6", reward: "25000", question: sixArray)
-
     }
     
     func makeQuestionHard7(){
+        // 7.SORU ÇAĞIRMA
         sevenArray.shuffle()
         makeQuestion(level: "7", reward: "50000", question: sevenArray)
-
     }
     
     func buttonBackPurple(){
+        // BUTTON BORDER COLOR PURPLE
         self.aButton.layer.borderWidth = 1
         self.aButton.layer.borderColor = UIColor.systemPurple.cgColor
         self.bButton.layer.borderWidth = 1
@@ -704,6 +728,7 @@ class ViewControllerTest: UIViewController {
                 button.layer.borderColor = UIColor.systemGreen.cgColor
                 correctQuestion += 1
                 reward = 10000
+                timerButton.setTitle("-", for: .normal)
                 makeQuestionMiddle6()
             }
             else if correctQuestion == 5{
@@ -718,6 +743,16 @@ class ViewControllerTest: UIViewController {
                 button.layer.borderColor = UIColor.systemGreen.cgColor
                 correctQuestion += 1
                 reward = 50000
+                aButton.isEnabled = false
+                bButton.isEnabled = false
+                cButton.isEnabled = false
+                dButton.isEnabled = false
+                seyirciButton.isEnabled = false
+                telefonButton.isEnabled = false
+                yariYariyaButton.isEnabled = false
+                retryButton.isHidden = false
+                finishLabel.text = "Tebrikler, Büyük ödülü kazandınız!"
+                finishLabel.isHidden = false
             }
         }
         else{
@@ -735,10 +770,13 @@ class ViewControllerTest: UIViewController {
             finishLabel.text = "Elendiniz. Kazandığınız Tutar: \(reward) TL"
             finishLabel.isHidden = false
             retryButton.isHidden = false
+            timerButton.setTitle("", for: .normal)
+            timer.invalidate()
         }
     }
     
     func makeQuestion(level : String ,reward : String, question : [question]){
+        // MAKE QUESTION
         rewardButton.setTitle("\(level). Soru : \(reward) TL", for: .normal)
         
         buttonBackPurple()
@@ -770,15 +808,23 @@ class ViewControllerTest: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // TRANSFER
         if segue.identifier == "toTelephone"{
-            let destVC = segue.destination as! ViewControllerTelephone
-            destVC.answer = buttons[0].titleLabel!.text!
-            destVC.question = questionButton.titleLabel!.text!
+            let telVC = segue.destination as! ViewControllerTelephone
+            telVC.answer = buttons[0].titleLabel!.text!
+            telVC.question = questionButton.titleLabel!.text!
             telefonButton.isHidden = true
+        }
+        if segue.identifier == "toSeyirci"{
+            let seyirciVC = segue.destination as! ViewControllerSeyirci
+            seyirciVC.trueAnswer = buttons[0].titleLabel!.text!
+            seyirciVC.whichButton = whichButton
+            seyirciButton.isHidden = true
         }
     }
     
     @IBAction func retryFunc(_ sender: Any) {
+        // RETRY BUTTON
         finishLabel.isHidden = true
         retryButton.isHidden = true
         aButton.isEnabled = true
@@ -799,6 +845,32 @@ class ViewControllerTest: UIViewController {
         correctQuestion = 0
         makeQuestionEasy1()
     }
+    
+    @IBAction func seyirciButton(_ sender: Any) {
+        // SEYİRCİ BUTTON
+        seyirciButton.isHidden = true
+    }
+    
+    @objc func countTimer(){
+        myTime -= 1
+        timerButton.setTitle("\(myTime)", for: .normal)
+        if myTime == 0{
+            timer.invalidate()
+            aButton.isEnabled = false
+            bButton.isEnabled = false
+            cButton.isEnabled = false
+            dButton.isEnabled = false
+            telefonButton.isEnabled = false
+            seyirciButton.isEnabled = false
+            yariYariyaButton.isEnabled = false
+            
+            finishLabel.text = "Elendiniz. Kazandığınız Tutar: \(reward) TL"
+            finishLabel.isHidden = false
+            retryButton.isHidden = false
+        }
+    }
+    
+    
     /*
     func addFailAnimation(){
         let animationReward = CABasicAnimation(keyPath: "reward")
